@@ -23,4 +23,8 @@ export default function() {
 
     http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
   */
+
+  this.get('/feeds', (schema, request) => {
+    return schema.feeds.all();
+  });
 }
