@@ -1,3 +1,3 @@
 export default function(server) {
-  server.createList('feed', 1);
+  server.createList('feed', 100);
 }
