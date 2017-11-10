@@ -1,23 +1,27 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
+import { inject as service } from "@ember/service";
 
 export default Component.extend({
+  store: service(),
+
   subscription: null,
   feed: computed.alias('subscription.feed'),
+  subscriptionOptions: computed.alias('subscription.options'),
 
-  preview: computed('feed', function() {
-    if (!this.get('feed')) {
-      return "No feed";
-    }
+  preview: null,
 
-    return `
-          BS 3-3-3<br>
-          Then...<br>
-          5 rounds:<br>
-          30-15-9<br>
-          30 DU<br>
-          15 KB Swings<br>
-          9 OHS<br><br>
-          <a href="http://bit.ly/abc123">http://bit.ly/abc123</a>`;
+  updatePreview: observer('feed', 'subscriptionOptions', function() {
+    this.get('feed').then((feed) => {
+      if (!feed) {
+        return this.set('preview', null);
+      }
+
+      let subscriptionOptions = this.get('subscriptionOptions');
+
+      feed.preview(subscriptionOptions).then((preview) => {
+        this.set('preview', preview.text);
+      });
+    });
   }),
 });

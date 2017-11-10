@@ -5,3 +5,4 @@ export default Route.extend({
     this.replaceWith('subscriptions.new');
   }
 });
+

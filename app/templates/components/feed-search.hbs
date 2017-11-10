@@ -1,4 +1,4 @@
-<nav class="panel has-text-left">
+<div class="panel has-text-left">
   {{#if subscription.feed}}
     <div class="panel-block is-active">
       <a class="panel-icon" {{action 'clearFeed'}}>
@@ -8,12 +8,12 @@
     </div>
   {{else}}
     <div class="panel-block">
-        <div class="control">
-          {{input
-            class="input"
-            placeholder="Search for your gym, or paste a URL"
-            key-up=(action 'search')}}
-        </div>
+      <div class="control">
+        {{input
+          class="input is-medium"
+          placeholder="Search for your gym, or paste a URL"
+          key-up=(action 'search')}}
+      </div>
     </div>
 
     {{#if results}}
@@ -30,4 +30,5 @@
       {{/if}}
     {{/if}}
   {{/if}}
-</nav>
+</div>
+&nbsp;

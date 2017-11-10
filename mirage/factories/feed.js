@@ -31,5 +31,5 @@ export default Factory.extend({
     ].join("/");
 
     return `${domain}/${path}`
-  }
+  },
 });
