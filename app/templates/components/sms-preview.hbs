@@ -5,8 +5,8 @@
 
     <div class="columns is-mobile level">
       <div class="column is-two-thirds level-item">
-        <div class="notification {{if isLoading '' 'is-success'}} has-text-left">
-          {{#if preview}}
+        <div class="notification is-success has-text-left">
+          {{#if displayPreview}}
             {{{render-preview preview}}}
           {{else}}
             No preview

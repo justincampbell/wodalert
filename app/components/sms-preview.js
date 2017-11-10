@@ -6,17 +6,20 @@ export default Component.extend({
   store: service(),
 
   subscription: null,
-  feed: computed.alias('subscription.feed'),
-  subscriptionOptions: computed.alias('subscription.options'),
+  feed: computed.oneWay('subscription.feed'),
+  subscriptionOptions: computed.oneWay('subscription.options'),
 
   preview: null,
 
-  updatePreview: observer('feed', 'subscriptionOptions', function() {
-    this.get('feed').then((feed) => {
-      if (!feed) {
-        return this.set('preview', null);
-      }
+  displayPreview: computed.and('preview', 'feed'),
 
+  updatePreview: observer('feed', 'subscriptionOptions', function() {
+    if (!this.get('feed.id')) {
+      this.set('preview', null);
+      return;
+    }
+
+    this.get('feed').then((feed) => {
       let subscriptionOptions = this.get('subscriptionOptions');
 
       feed.preview(subscriptionOptions).then((preview) => {
