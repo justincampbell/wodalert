@@ -3,8 +3,9 @@ import { inject as service } from '@ember/service';
 
 export default Component.extend({
   store: service(),
-  newSubscription: service(),
 
+  query: null,
+  subscription: null,
   results: [],
 
   actions: {
@@ -15,14 +16,15 @@ export default Component.extend({
       });
 
       this.set('results', results);
+      this.set('query', query);
     },
 
     clearFeed() {
-      this.get('newSubscription').clearFeed();
+      this.get('subscription').set('feed', null);
     },
 
     pickFeed(feed) {
-      this.get('newSubscription').pickFeed(feed);
+      this.get('subscription').set('feed', feed);
     }
   },
 });

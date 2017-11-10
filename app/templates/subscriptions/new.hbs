@@ -6,12 +6,16 @@
 
 <div class="columns">
   <div class="column">
-    {{feed-search}}
+    {{feed-search subscription=model}}
+
+    {{#if model.feed}}
+      {{subscription-options subscription=model}}
+    {{/if}}
   </div>
 
-  <div class="column">
-    {{sms-preview}}
-  </div>
+  {{#if model.feed}}
+    <div class="column">
+      {{sms-preview subscription=model}}
+    </div>
+  {{/if}}
 </div>
-
-{{outlet}}

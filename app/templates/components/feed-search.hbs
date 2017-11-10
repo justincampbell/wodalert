@@ -1,25 +1,33 @@
-<nav class="panel">
-  {{#if newSubscription.feed}}
+<nav class="panel has-text-left">
+  {{#if subscription.feed}}
     <div class="panel-block is-active">
       <a class="panel-icon" {{action 'clearFeed'}}>
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </a>
-      {{newSubscription.feed.name}}
+      {{subscription.feed.name}}
     </div>
   {{else}}
     <div class="panel-block">
         <div class="control">
           {{input
-          class="input"
-          placeholder="Search for your gym, or paste a URL"
-          key-up=(action 'search')}}
+            class="input"
+            placeholder="Search for your gym, or paste a URL"
+            key-up=(action 'search')}}
         </div>
     </div>
 
-    {{#each results as |feed|}}
-      <a class="panel-block" {{action 'pickFeed' feed}}>
-        {{feed.name}}
-      </a>
-    {{/each}}
+    {{#if results}}
+      {{#each results as |feed|}}
+        <a class="panel-block" {{action 'pickFeed' feed}}>
+          {{feed.name}}
+        </a>
+      {{/each}}
+    {{else}}
+      {{#if query}}
+        <span class="panel-block">
+          No results
+        </span>
+      {{/if}}
+    {{/if}}
   {{/if}}
 </nav>
