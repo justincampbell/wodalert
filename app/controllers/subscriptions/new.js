@@ -2,27 +2,40 @@ import Controller from "@ember/controller";
 import { computed } from "@ember/object";
 
 export default Controller.extend({
-  confirmedSubscriptionOptions: false,
-
-  subscriptionOptionsVisible: computed(
-    "confirmedSubscriptionOptions",
-    "model.feed",
-    function() {
-      if (this.get("confirmedSubscriptionOptions")) {
-        return false;
-      }
-
-      if (!this.get("model.feed")) {
-        return true;
-      }
-
-      return false;
-    }
-  ),
+  error: null,
+  feedPicked: computed.bool("model.feed.id"),
+  hasError: computed.notEmpty("error"),
+  isLoading: false,
 
   actions: {
-    confirmSubscriptionOptions() {
-      this.set('confirmedSubscriptionOptions', true);
+    signUp() {
+      this.set("isLoading", true);
+
+      const store = this.get("store");
+      var feed = this.get("model.feed");
+
+      var subscription = store.createRecord("subscription", {
+        feed: feed,
+      });
+
+      subscription
+        .save()
+        .then(
+          () => {
+            this.transitionToRoute("subscriptions.show", subscription);
+            this.set("error", null);
+          },
+          error => {
+            if (error.isAdapterError) {
+              this.set("error", error.errors[0].detail);
+            } else {
+              this.set("error", "Could not create subscription");
+            }
+          }
+        )
+        .finally(() => {
+          this.set("isLoading", false);
+        });
     },
   },
 });

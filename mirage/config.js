@@ -41,4 +41,6 @@ export default function() {
     return { data: { attributes: { text: preview } } };
   });
 
+  this.post("subscriptions");
+  this.get("subscriptions/:id");
 }

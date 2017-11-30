@@ -1,8 +1,7 @@
-import Route from '@ember/routing/route';
+import Route from "@ember/routing/route";
 
 export default Route.extend({
   beforeModel() {
-    this.replaceWith('subscriptions.new');
-  }
+    this.replaceWith("subscriptions.new");
+  },
 });
-

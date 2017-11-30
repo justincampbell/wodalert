@@ -7,31 +7,43 @@
 <div class="columns">
   <div class="column">
     {{feed-search subscription=model}}
-    {{subscription-options subscription=model}}
+
+    {{#if feedPicked}}
+      {{subscription-options subscription=model}}
+    {{/if}}
   </div>
 
-  <div class="column">
-    {{sms-preview subscription=model}}
-  </div>
+  {{#if feedPicked}}
+    <div class="column">
+      {{sms-preview subscription=model}}
+    </div>
+  {{/if}}
 </div>
 
-<div class="field">
-  <div class="control has-icons-left">
-    {{input type="tel" class="input is-medium" placeholder="Phone Number"}}
-    <span class="icon is-medium is-left">
-      <i class="fa fa-mobile"></i>
-    </span>
+{{#if feedPicked}}
+  <div class="field">
+    <div class="control has-icons-left">
+      {{input type="tel" class="input is-medium" placeholder="4846863735" disabled=true}}
+      <span class="icon is-medium is-left">
+        <i class="fa fa-mobile"></i>
+      </span>
+    </div>
   </div>
-</div>
 
-<div class="field">
-  <div class="control">
-    <button class="button is-medium is-black" {{action 'confirmSubscriptionOptions'}}>
-      Sign Up
-    </button>
+  <div class="field">
+    <div class="control">
+      <button
+         class="button is-medium is-black {{if isLoading 'is-loading'}}"
+         {{action 'signUp'}}
+         disabled={{isLoading}}>
+        Sign Up
+      </button>
+
+      <div class="has-text-danger">
+        {{#if hasError}}
+          {{error}}
+        {{/if}}
+      </div>
+    </div>
   </div>
-</div>
-
-{{#if confirmedSubscriptionOptions}}
-  Done!
 {{/if}}
