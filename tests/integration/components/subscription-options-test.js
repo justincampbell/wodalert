@@ -6,19 +6,10 @@ moduleForComponent('subscription-options', 'Integration | Component | subscripti
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  var model = { };
+  this.set('model', model);
 
-  this.render(hbs`{{subscription-options}}`);
+  this.render(hbs`{{subscription-options subscription=model}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#subscription-options}}
-      template block text
-    {{/subscription-options}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$(`article input`).length, 2);
 });

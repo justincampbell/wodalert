@@ -6,19 +6,9 @@ moduleForComponent('feed-search', 'Integration | Component | feed search', {
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  var model = {};
+  this.set('model', model);
+  this.render(hbs`{{feed-search subscription=model}}`);
 
-  this.render(hbs`{{feed-search}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#feed-search}}
-      template block text
-    {{/feed-search}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$(`input`).length, 3);
 });

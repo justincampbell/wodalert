@@ -1,24 +1,17 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('sms-preview', 'Integration | Component | sms preview', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  var model = {};
+  this.set('model', model);
+  this.render(hbs`{{sms-preview subscription=model}}`);
 
-  this.render(hbs`{{sms-preview}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#sms-preview}}
-      template block text
-    {{/sms-preview}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(
+    this.$(`.message .timestamp`).text().trim(),
+    '9:42 AM',
+  );
 });

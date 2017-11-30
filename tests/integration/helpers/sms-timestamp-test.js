@@ -6,12 +6,9 @@ moduleForComponent('sms-timestamp', 'helper:sms-timestamp', {
   integration: true
 });
 
-// Replace this with your real tests.
 test('it renders', function(assert) {
-  this.set('inputValue', '1234');
+  this.render(hbs`{{sms-timestamp}}`);
 
-  this.render(hbs`{{sms-timestamp inputValue}}`);
-
-  assert.equal(this.$().text().trim(), '1234');
+  assert.equal(this.$().text().trim(), '9:42 AM');
 });
 

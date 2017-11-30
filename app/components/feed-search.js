@@ -1,5 +1,5 @@
-import Component from '@ember/component';
-import { inject as service } from '@ember/service';
+import Component from "@ember/component";
+import { inject as service } from "@ember/service";
 
 export default Component.extend({
   store: service(),
@@ -10,21 +10,21 @@ export default Component.extend({
 
   actions: {
     search(query) {
-      let store = this.get('store');
-      let results = store.query('feed', {
-        filter: { query: query }
+      let store = this.get("store");
+      let results = store.query("feed", {
+        filter: { query: query },
       });
 
-      this.set('results', results);
-      this.set('query', query);
+      this.set("results", results);
+      this.set("query", query);
     },
 
     clearFeed() {
-      this.get('subscription').set('feed', null);
+      this.get("subscription").set("feed", null);
     },
 
     pickFeed(feed) {
-      this.get('subscription').set('feed', feed);
-    }
+      this.get("subscription").set("feed", feed);
+    },
   },
 });

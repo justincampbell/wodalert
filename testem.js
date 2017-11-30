@@ -2,15 +2,15 @@
 module.exports = {
   test_page: 'tests/index.html?hidepassed',
   disable_watching: true,
+  growl: true,
   launch_in_ci: [
-    'Chrome'
+    'Chrome',
   ],
   launch_in_dev: [
-    'Chrome'
+    'Chrome',
   ],
   browser_args: {
     Chrome: {
-      mode: 'ci',
       args: [
         '--disable-gpu',
         '--headless',
