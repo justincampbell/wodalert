@@ -11,6 +11,7 @@ Router.map(function() {
     this.route("new");
     this.route("show", { path: "/:subscription_id" });
   });
+  this.route("auth");
 });
 
 export default Router;

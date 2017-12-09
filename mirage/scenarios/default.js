@@ -1,3 +1,5 @@
 export default function(server) {
-  server.createList('feed', 100);
+  server.create("user", { smsNumber: "1234567890" });
+
+  server.createList("feed", 100);
 }

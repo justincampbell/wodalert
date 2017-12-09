@@ -1,0 +1,110 @@
+{{#if isSignedOut}}
+  <button
+    class="button is-medium is-success"
+    {{action "signIn"}}>
+    <span class="icon is-medium">
+      <i class="fa fa-sign-in"></i>
+    </span>
+
+    <span>
+      {{buttonText}}
+    </span>
+  </button>
+{{else if isWaitingForSMSNumber}}
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="field is-grouped is-grouped-centered">
+        <div class="control has-icons-left">
+          {{input
+          value=smsNumber
+          class="input is-medium"
+          placeholder="SMS Number"}}
+
+          <span class="icon is-medium is-left">
+            <i class="fa fa-mobile"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-centered">
+        <div class="control">
+          <button
+             class="button is-medium is-success {{if isLoading 'is-loading'}}"
+             {{action "requestCode"}}
+             disabled={{isLoading}}>
+            Request Code
+          </button>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+{{else if isWaitingForVerificationCode}}
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="field is-grouped is-grouped-centered">
+        <div class="control has-icons-left">
+          {{input
+            value=verificationCode
+            class="input is-medium"
+            placeholder="Verification Code"}}
+
+          <span class="icon is-medium is-left">
+            <i class="fa fa-lock"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-centered">
+        <div class="control">
+          <button
+            class="button is-medium is-success {{if isLoading 'is-loading'}}"
+            {{action "verifyCode"}}
+            disabled={{isLoading}}>
+            Verify
+          </button>
+        </div>
+      </div>
+
+      {{#unless isLoading}}
+        <div class="field is-grouped is-grouped-centered">
+          <div class="control">
+            <button
+              class="button is-small is-success"
+              {{action "requestCode"}}>
+              Re-send
+            </button>
+          </div>
+
+          <div class="control">
+            <button
+              class="button is-small is-success"
+              {{action "verifyCode"}}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      {{/unless}}
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+{{else if isSigningIn}}
+  <button class="button is-medium is-success is-loading" disabled>
+    1234567890
+  </button>
+{{else if isSignedIn}}
+  <button
+    class="button is-medium is-success {{if isLoading 'is-loading'}}"
+    {{action "signOut"}}
+    disabled={{isLoading}}>
+    <span class="icon is-medium">
+      <i class="fa fa-sign-out"></i>
+    </span>
+
+    <span>
+      {{currentUser.smsNumber}}
+    </span>
+  </button>
+{{/if}}
