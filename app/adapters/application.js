@@ -3,6 +3,8 @@ import { computed } from "@ember/object";
 import { inject as service } from "@ember/service";
 
 export default DS.JSONAPIAdapter.extend({
+  host: "https://feed-alerts-api.herokuapp.com",
+
   authentication: service(),
 
   headers: computed("authentication.isAuthenticated", function() {
