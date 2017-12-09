@@ -1,6 +1,7 @@
-import Service, { inject as service } from "@ember/service";
-import { computed } from "@ember/object";
 import Ember from "ember";
+import Service, { inject as service } from "@ember/service";
+import config from "../config/environment";
+import { computed } from "@ember/object";
 
 export default Service.extend({
   cookies: service(),
@@ -34,7 +35,7 @@ export default Service.extend({
   authenticate() {
     Ember.$.ajax({
       method: "GET",
-      url: `/authenticate`,
+      url: config.APP.host + `/authenticate`,
       headers: {
         Authorization: "Bearer " + this.getToken(),
       },
@@ -53,7 +54,7 @@ export default Service.extend({
     return new Ember.RSVP.Promise(() => {
       Ember.$.ajax({
         method: "DELETE",
-        url: `/authenticate`,
+        url: config.APP.host + `/authenticate`,
         headers: {
           Authorization: "Bearer " + this.getToken(),
         },
@@ -66,7 +67,7 @@ export default Service.extend({
   requestCode(smsNumber) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.post({
-        url: `/authenticate/request-code`,
+        url: config.APP.host + `/authenticate/request-code`,
         data: { sms_number: smsNumber },
         success: () => resolve(),
         error: () => reject(),
@@ -77,7 +78,7 @@ export default Service.extend({
   verifyCode(smsNumber, verificationCode) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.post({
-        url: `/authenticate`,
+        url: config.APP.host + `/authenticate`,
         data: {
           sms_number: smsNumber,
           verification_code: verificationCode,
