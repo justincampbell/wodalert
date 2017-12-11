@@ -7,24 +7,21 @@ export default Component.extend({
 
   subscription: null,
   feed: computed.oneWay("subscription.feed"),
-  subscriptionOptions: computed.oneWay("subscription.options"),
 
   preview: null,
 
   displayPreview: computed.and("preview", "feed"),
 
-  updatePreview: observer("feed", "subscriptionOptions", function() {
-    if (!this.get("feed.id")) {
-      this.set("preview", null);
-      return;
+  updatePreview: observer(
+    "feed.id",
+    "subscription.includeTitle",
+    "subscription.shortenCommonTerms",
+    function() {
+      this.get("subscription")
+        .preview()
+        .then(preview => {
+          this.set("preview", preview.data.attributes.text);
+        });
     }
-
-    this.get("feed").then(feed => {
-      let subscriptionOptions = this.get("subscriptionOptions");
-
-      feed.preview(subscriptionOptions).then(preview => {
-        this.set("preview", preview.data.attributes.text);
-      });
-    });
-  }),
+  ),
 });
