@@ -1,23 +1,14 @@
-{{feed}}
-{{subscriptionOptions}}
 <article class="message is-dark">
   <div class="message-body">
     <p class="is-size-7">Preview</p>
     <h5 class="title is-5 has-text-centered">Message from (123) 456-7890</h5>
 
-    <div class="columns is-mobile level">
-      <div class="column is-two-thirds level-item">
-        <div class="notification is-success has-text-left">
-          {{#if displayPreview}}
-            {{{render-preview preview}}}
-          {{else}}
-            No preview
-          {{/if}}
-        </div>
-      </div>
-      <div class="column level-item is-size-7 has-text-right timestamp">
-        {{sms-timestamp}}
-      </div>
+    <div class="notification is-success has-text-left">
+      {{#if displayPreview}}
+        {{{render-preview preview}}}
+      {{else}}
+        No preview
+      {{/if}}
     </div>
   </div>
 </article>
