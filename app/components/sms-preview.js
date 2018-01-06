@@ -3,6 +3,11 @@ import { computed, observer } from "@ember/object";
 import { inject as service } from "@ember/service";
 
 export default Component.extend({
+  init() {
+    this._super(...arguments);
+    this.updatePreview();
+  },
+
   store: service(),
 
   subscription: null,
