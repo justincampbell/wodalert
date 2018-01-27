@@ -33,33 +33,49 @@ export default Service.extend({
   },
 
   authenticate() {
-    Ember.$.ajax({
-      method: "GET",
-      url: config.APP.host + `/authenticate`,
-      headers: {
-        Authorization: "Bearer " + this.getToken(),
-      },
-      success: response => {
-        let user = this.get("store").pushPayload(response);
-        this.set("currentUser", user);
-      },
-      error: () => {
-        // TODO: Show flash message
-        this.clearToken();
-      },
-    });
-  },
-
-  deleteSession() {
-    return new Ember.RSVP.Promise(() => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
-        method: "DELETE",
+        method: "GET",
         url: config.APP.host + `/authenticate`,
         headers: {
           Authorization: "Bearer " + this.getToken(),
         },
-        success: () => this.clearToken(),
-        error: () => this.clearToken(),
+        success: response => {
+          let user = this.get("store").pushPayload(response);
+          this.set("currentUser", user);
+        },
+        error: response => {
+          let errors = response.responseJSON.errors.map(error => error.detail);
+          this.clearToken();
+          reject(errors);
+        },
+      });
+    });
+  },
+
+  deleteSession() {
+    return new Ember.RSVP.Promise(resolve => {
+      let token = this.getToken();
+
+      if (!token) {
+        resolve();
+        return;
+      }
+
+      Ember.$.ajax({
+        method: "DELETE",
+        url: config.APP.host + `/authenticate`,
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        success: () => {
+          this.clearToken();
+          resolve();
+        },
+        error: () => {
+          this.clearToken();
+          resolve();
+        },
       });
     }, "Service 'authentication': requestCode");
   },
@@ -70,7 +86,10 @@ export default Service.extend({
         url: config.APP.host + `/authenticate/request-code`,
         data: { sms_number: smsNumber },
         success: () => resolve(),
-        error: () => reject(),
+        error: response => {
+          let errors = response.responseJSON.errors.map(error => error.detail);
+          reject(errors);
+        },
       });
     }, "Service 'authentication': requestCode");
   },
@@ -88,7 +107,10 @@ export default Service.extend({
           this.setToken(session.get("token"), session.get("expiresAt"));
           resolve();
         },
-        error: () => reject(),
+        error: response => {
+          let errors = response.responseJSON.errors.map(error => error.detail);
+          reject(errors);
+        },
       });
     }, "Service 'authentication': verifyCode");
   },

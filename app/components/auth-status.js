@@ -7,6 +7,7 @@ export default Component.extend({
   // TODO:
 
   authentication: service(),
+  flashMessages: service(),
 
   isAuthenticated: computed.alias("authentication.isAuthenticated"),
   currentUser: computed.alias("authentication.currentUser"),
@@ -28,6 +29,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
+    this.get("authentication").authenticate();
     // We have to get this during init for the observer to work.
     this.get("isAuthenticated");
   },
@@ -50,10 +52,15 @@ export default Component.extend({
 
       this.get("authentication")
         .deleteSession()
-        .finally(this.set("isLoading", false));
+        .finally(() => {
+          this.set("isLoading", false);
+          this.set("state", "signedOut");
+        });
     },
 
     requestCode() {
+      const flash = this.get("flashMessages");
+
       this.set("isLoading", true);
 
       this.get("authentication")
@@ -61,9 +68,12 @@ export default Component.extend({
         .then(
           () => {
             this.set("state", "waitingForVerificationCode");
+            flash.info("Verification code sent to " + this.get("smsNumber"));
           },
-          error => {
-            console.log(error);
+          errors => {
+            errors.forEach(error => {
+              flash.danger(error);
+            });
           }
         )
         .finally(() => {
@@ -72,6 +82,8 @@ export default Component.extend({
     },
 
     verifyCode() {
+      const flash = this.get("flashMessages");
+
       this.set("isLoading", true);
 
       this.get("authentication")
@@ -79,9 +91,12 @@ export default Component.extend({
         .then(
           () => {
             this.set("state", "signingIn");
+            flash.success("SMS number verified");
           },
-          error => {
-            console.log(error);
+          errors => {
+            errors.forEach(error => {
+              flash.danger(error);
+            });
           }
         )
         .finally(() => {
