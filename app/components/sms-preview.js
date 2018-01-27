@@ -19,7 +19,9 @@ export default Component.extend({
 
   updatePreview: observer(
     "feed.id",
+    "subscription.includeFeedName",
     "subscription.includeTitle",
+    "subscription.includeLink",
     "subscription.shortenCommonTerms",
     function() {
       this.get("subscription")

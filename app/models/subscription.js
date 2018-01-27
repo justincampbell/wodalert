@@ -5,7 +5,9 @@ const { attr, belongsTo } = DS;
 
 export default DS.Model.extend({
   feed: belongsTo("feed"),
-  includeTitle: attr("boolean", { defaultValue: false }),
+  includeFeedName: attr("boolean", { defaultValue: false }),
+  includeTitle: attr("boolean", { defaultValue: true }),
+  includeLink: attr("boolean", { defaultValue: true }),
   shortenCommonTerms: attr("boolean", { defaultValue: true }),
 
   preview() {
