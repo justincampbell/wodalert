@@ -3,7 +3,7 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: "workout-alerts",
+    modulePrefix: "wodalert",
     environment,
     rootURL: "/",
     locationType: "auto",
