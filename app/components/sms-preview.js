@@ -19,6 +19,7 @@ export default Component.extend({
 
   updatePreview: observer(
     "feed.id",
+    "subscription.characterLimit",
     "subscription.includeFeedName",
     "subscription.includeTitle",
     "subscription.includeLink",
@@ -30,5 +31,5 @@ export default Component.extend({
           this.set("preview", preview.data.attributes.text);
         });
     }
-  ),
+  )
 });

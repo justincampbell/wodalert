@@ -1,5 +1,45 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    {{#link-to "subscriptions.new" class="navbar-item"}}
+      <h1 class="title">{{app-title}}</h1>
+    {{/link-to}}
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      {{#link-to "subscriptions.new" class="navbar-item"}}
+        Find Your Gym
+      {{/link-to}}
+
+      {{#link-to "feeds.new" class="navbar-item"}}
+        Add a Gym
+      {{/link-to}}
+
+      <a class="navbar-item">How It Works</a>
+      <a class="navbar-item">Pricing</a>
+    </div>
+
+    <div class="navbar-end">
+      {{#link-to "auth" class="navbar-item"}}
+        Auth Test
+      {{/link-to}}
+
+      {{auth-status}}
+    </div>
+  </div>
+</nav>
+
 <div id="flash-messages">
   {{flash-messages}}
 </div>
 
-{{outlet}}
+<section class="section has-text-centered-mobile">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+      </div>
+    </div>
+
+    {{outlet}}
+  </div>
+</section>

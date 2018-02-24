@@ -4,7 +4,7 @@
       <div class="control">
         <label class="checkbox">
           {{input type="checkbox" checked=subscription.includeFeedName}}
-          Include Feed Name
+          Include feed name
         </label>
       </div>
     </div>
@@ -13,7 +13,7 @@
       <div class="control">
         <label class="checkbox">
           {{input type="checkbox" checked=subscription.includeTitle}}
-          Include Title
+          Include title
         </label>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <div class="control">
         <label class="checkbox">
           {{input type="checkbox" checked=subscription.shortenCommonTerms}}
-          Shorten Common Terms
+          Shorten common terms
         </label>
       </div>
     </div>
@@ -31,8 +31,32 @@
       <div class="control">
         <label class="checkbox">
           {{input type="checkbox" checked=subscription.includeLink}}
-          Include Link
+          Include link
         </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        Limit to  {{pluralize messageLimit "text message"}}
+      </label>
+
+      <div class="control level is-mobile">
+        <button {{action "incrementCharacterLimit" -160}} class="button is-small level-item">
+          Shorter
+        </button>
+
+        {{input
+          type="range"
+          min="160"
+          max="1600"
+          step="160"
+          value=subscription.characterLimit
+          class="level-item"}}
+
+        <button {{action "incrementCharacterLimit" 160}} class="button is-small level-item">
+          Longer
+        </button>
       </div>
     </div>
   </div>
