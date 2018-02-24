@@ -1,0 +1,37 @@
+<div class="has-text-centered">
+  <h3 class="title">1: Choose the feed type</h3>
+
+  <div class="field has-addons">
+    <div class="control">
+      <button class="button {{if (eq model.kind "rss") "is-active"}}" {{action "setKind" "rss"}}>
+        RSS
+      </button>
+    </div>
+
+    <div class="control">
+      <button class="button {{if (eq model.kind "other") "is-active"}}" {{action "setKind" "other"}}>
+        Other
+      </button>
+    </div>
+  </div>
+
+  <h3 class="title">2: Enter a URL</h3>
+
+  <div class="field">
+    <div class="control">
+      {{input value=model.url class="input"}}
+    </div>
+  </div>
+
+  <h3 class="title">3: Finish</h3>
+
+  <div class="field">
+    {{#if isAuthenticated}}
+      <button class="button is-primary" {{action "submit"}}>
+        Publish
+      </button>
+    {{else}}
+      {{auth-status}}
+    {{/if}}
+  </div>
+</div>

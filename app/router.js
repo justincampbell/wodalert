@@ -3,15 +3,20 @@ import config from "./config/environment";
 
 const Router = EmberRouter.extend({
   location: config.locationType,
-  rootURL: config.rootURL,
+  rootURL: config.rootURL
 });
 
 Router.map(function() {
+  this.route("auth");
+
+  this.route("feeds", function() {
+    this.route("new");
+  });
+
   this.route("subscriptions", function() {
     this.route("new");
     this.route("show", { path: "/:subscription_id" });
   });
-  this.route("auth");
 });
 
 export default Router;
