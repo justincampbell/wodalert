@@ -1,0 +1,18 @@
+input[type=checkbox] {
+  -webkit-appearance: none;
+  border-radius: $radius-small;
+  border: 2px solid $link;
+  font-size: $size-4;
+  height: 1em;
+  margin: 0 0.2em 0.1em 0;
+  vertical-align: middle;
+  width: 1em;
+
+  &:checked {
+    background-color: $link;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
