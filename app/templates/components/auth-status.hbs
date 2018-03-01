@@ -1,8 +1,8 @@
 {{#if isSignedOut}}
   <button
-    class="button is-medium is-success"
+    class="button is-success"
     {{action "signIn"}}>
-    <span class="icon is-medium">
+    <span class="icon">
       <i class="fa fa-sign-in"></i>
     </span>
 
@@ -100,15 +100,15 @@
     <button class="modal-close is-large" aria-label="close"></button>
   </div>
 {{else if isSigningIn}}
-  <button class="button is-medium is-success is-loading" disabled>
+  <button class="button is-success is-loading" disabled>
     Signing in...
   </button>
 {{else if isSignedIn}}
   <button
-    class="button is-medium is-success {{if isLoading 'is-loading'}}"
+    class="button is-link {{if isLoading 'is-loading'}}"
     {{action "signOut"}}
     disabled={{isLoading}}>
-    <span class="icon is-medium">
+    <span class="icon">
       <i class="fa fa-sign-out"></i>
     </span>
 
