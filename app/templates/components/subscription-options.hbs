@@ -36,32 +36,47 @@
       </div>
     </div>
 
-    <div class="field">
-      <label>
-        Limit to  {{pluralize messageLimit "text message"}}
-      </label>
+    {{#if showAdvancedOptions}}
+      <div class="field">
+        <label class="is-hidden-touch">
+          Limit to {{pluralize messageLimit "text message"}}
+        </label>
 
-      <div class="control level is-mobile">
-        <button {{action "incrementCharacterLimit" -160}} class="button is-small is-link level-item">
-          Shorter
-        </button>
+        <div class="control level is-mobile">
+          <button {{action "incrementCharacterLimit" -160}} class="button is-small is-link level-item">
+            Shorter
+          </button>
 
-        {{input
-          type="range"
-          min="160"
-          max="1600"
-          step="160"
-          value=subscription.characterLimit
-          class="level-item"}}
+          <div class="level-item">
+            <div class="is-hidden-desktop">
+              {{pluralize messageLimit "text message"}}
+            </div>
 
-        <button {{action "incrementCharacterLimit" 160}} class="button is-small is-link level-item">
-          Longer
-        </button>
+            <div class="is-hidden-touch">
+              {{input
+                type="range"
+                min="160"
+                max="1600"
+                step="160"
+                value=subscription.characterLimit}}
+            </div>
+          </div>
 
-        <button {{action "incrementCharacterLimit" 1600}} class="button is-small is-link level-item">
-          Max
-        </button>
+          <button {{action "incrementCharacterLimit" 160}} class="button is-small is-link level-item">
+            Longer
+          </button>
+
+          <button {{action "incrementCharacterLimit" 1600}} class="button is-small is-link level-item">
+            Max
+          </button>
+        </div>
       </div>
-    </div>
+    {{else}}
+      <small>
+        <a {{action "toggleAdvancedOptions"}}>
+          Show more options
+        </a>
+      </small>
+    {{/if}}
   </div>
 </article>
