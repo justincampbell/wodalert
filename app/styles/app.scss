@@ -1,5 +1,31 @@
 @import "bulma/sass/utilities/initial-variables";
 @import "bulma/sass/utilities/functions";
+
+$black: hsl(0, 0%, 4%);
+$black-bis: hsl(0, 0%, 7%);
+$black-ter: hsl(0, 0%, 14%);
+
+$grey: #2e382e;
+$gray-dark: darken($grey, 1.5%);
+$gray-darker: darken($grey, 3%);
+$grey-light: lighten($grey, 1.5%);
+$grey-lighter: lighten($grey, 3%);
+
+$white: #fafafa;
+$white-bis: darken($white, 1.5%);
+$white-ter: darken($white, 3%);
+
+$orange: hsl(14, 100%, 53%);
+$yellow: #fffd82;
+$green: #1fcd4f;
+$turquoise: hsl(171, 100%, 41%);
+$cyan: hsl(204, 86%, 53%);
+$blue: #9381FF;
+$purple: hsl(271, 100%, 71%);
+$red: hsl(348, 100%, 61%);
+
+$primary: #ed217c;
+
 @import "bulma/bulma";
 @import "_checkbox";
 

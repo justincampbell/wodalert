@@ -42,7 +42,7 @@
       </label>
 
       <div class="control level is-mobile">
-        <button {{action "incrementCharacterLimit" -160}} class="button is-small level-item">
+        <button {{action "incrementCharacterLimit" -160}} class="button is-small is-link level-item">
           Shorter
         </button>
 
@@ -54,8 +54,12 @@
           value=subscription.characterLimit
           class="level-item"}}
 
-        <button {{action "incrementCharacterLimit" 160}} class="button is-small level-item">
+        <button {{action "incrementCharacterLimit" 160}} class="button is-small is-link level-item">
           Longer
+        </button>
+
+        <button {{action "incrementCharacterLimit" 1600}} class="button is-small is-link level-item">
+          Max
         </button>
       </div>
     </div>
