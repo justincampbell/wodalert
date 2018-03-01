@@ -25,9 +25,11 @@ export default Component.extend({
     "subscription.includeLink",
     "subscription.shortenCommonTerms",
     function() {
+      this.set("loading", true);
       this.get("subscription")
         .preview()
         .then(preview => {
+          this.set("loading", false);
           this.set("preview", preview.data.attributes.text);
         });
     }
