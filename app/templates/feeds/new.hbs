@@ -1,37 +1,39 @@
-<div class="has-text-centered">
-  <h3 class="title">1: Choose the feed type</h3>
+<div class="content">
+  <div class="columns">
+    <div class="column">
+      <h2>
+        Add a new gym
+      </h2>
 
-  <div class="field has-addons">
-    <div class="control">
-      <button class="button {{if (eq model.kind "rss") "is-active"}}" {{action "setKind" "rss"}}>
-        RSS
-      </button>
+      <p>
+      Use this to add a new WOD source to our database. We only support RSS feeds at this time.
+      </p>
+
+      <p>
+        If you'd like to add a gym that doesn't have an RSS feed, please let us know!
+        Send an email to <a href="mailto:contact@wodalert.com">contact@wodalert.com</a> with the name and website for your gym.
+      </p>
     </div>
 
-    <div class="control">
-      <button class="button {{if (eq model.kind "other") "is-active"}}" {{action "setKind" "other"}}>
-        Other
-      </button>
+    <div class="column has-text-centered">
+      <div class="field">
+        <div class="control">
+          {{input
+          value=model.url
+          class="input"
+          placeholder="RSS Feed URL"}}
+        </div>
+      </div>
+
+      <div class="field">
+        {{#if isAuthenticated}}
+          <button class="button is-primary" {{action "submit"}}>
+            Publish
+          </button>
+        {{else}}
+          {{auth-status}}
+        {{/if}}
+      </div>
     </div>
-  </div>
-
-  <h3 class="title">2: Enter a URL</h3>
-
-  <div class="field">
-    <div class="control">
-      {{input value=model.url class="input"}}
-    </div>
-  </div>
-
-  <h3 class="title">3: Finish</h3>
-
-  <div class="field">
-    {{#if isAuthenticated}}
-      <button class="button is-primary" {{action "submit"}}>
-        Publish
-      </button>
-    {{else}}
-      {{auth-status}}
-    {{/if}}
   </div>
 </div>
