@@ -10,9 +10,15 @@ export default Component.extend({
 
   actions: {
     search(query) {
+      this.set("isLoading", true);
+
       let store = this.get("store");
       let results = store.query("feed", {
         filter: { query: query },
+      });
+
+      results.then(() => {
+        this.set("isLoading", false);
       });
 
       this.set("results", results);

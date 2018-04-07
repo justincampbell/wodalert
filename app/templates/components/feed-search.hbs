@@ -25,7 +25,11 @@
     {{else}}
       {{#if query}}
         <span class="panel-block">
-          No results
+          {{#if isLoading}}
+            Loading...
+          {{else}}
+            No results
+          {{/if}}
         </span>
       {{/if}}
     {{/if}}
