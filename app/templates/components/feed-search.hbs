@@ -1,18 +1,20 @@
-<div class="panel has-text-left">
-  {{#if subscription.feed}}
+{{#if subscription.feed}}
+  <div class="panel has-text-left">
     <div class="panel-block is-active">
       <a class="panel-icon" {{action 'clearFeed'}}>
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </a>
       {{subscription.feed.name}}
     </div>
-  {{else}}
+  </div>
+{{else}}
+  <div class="panel has-text-left">
     <div class="panel-block">
       <div class="control">
         {{input
-          class="input is-medium"
-          placeholder="Search for your gym's workout feed"
-          key-up=(action 'search')}}
+        class="input is-medium"
+        placeholder="Search for your gym's workout feed"
+        key-up=(action 'search')}}
       </div>
     </div>
 
@@ -33,13 +35,13 @@
         </span>
       {{/if}}
     {{/if}}
-  {{/if}}
-</div>
+  </div>
 
-<div class="content">
-  <p>
+  <div class="content">
+    <p>
     Search for your gym's feed, or
     {{#link-to "feeds.new"}}add a gym{{/link-to}}.
-  </p>
-</div>
+    </p>
+  </div>
+{{/if}}
 &nbsp;
