@@ -47,7 +47,11 @@
         </div>
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
+    <button
+      class="modal-close is-large"
+      aria-label="close"
+      {{action "signOut"}}>
+    </button>
   </div>
 {{else if isWaitingForVerificationCode}}
   <div class="modal is-active">
@@ -97,7 +101,11 @@
         </div>
       {{/unless}}
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
+    <button
+      class="modal-close is-large"
+      aria-label="close"
+      {{action "signOut"}}>
+    </button>
   </div>
 {{else if isSigningIn}}
   <button class="button is-success is-loading" disabled>
