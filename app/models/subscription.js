@@ -6,10 +6,10 @@ const { attr, belongsTo } = DS;
 export default DS.Model.extend({
   feed: belongsTo("feed"),
   characterLimit: attr("number", { defaultValue: 480 }),
-  includeFeedName: attr("boolean", { defaultValue: false }),
+  includeFeedName: attr("boolean", { defaultValue: true }),
   includeTitle: attr("boolean", { defaultValue: true }),
   includeLink: attr("boolean", { defaultValue: true }),
-  shortenCommonTerms: attr("boolean", { defaultValue: true }),
+  shortenCommonTerms: attr("boolean", { defaultValue: false }),
 
   incrementCharacterLimit(by) {
     this.incrementProperty("characterLimit", by);
@@ -29,5 +29,5 @@ export default DS.Model.extend({
 
     const adapter = this.store.adapterFor(this.constructor.modelName);
     return adapter.preview(this);
-  }
+  },
 });
