@@ -9,8 +9,13 @@ export default Controller.extend({
   feedPicked: computed.bool("model.feed.id"),
   hasError: computed.notEmpty("error"),
   isLoading: false,
+  isShowingOptions: false,
 
   actions: {
+    toggleOptions() {
+      this.toggleProperty("isShowingOptions");
+    },
+
     signUp() {
       this.set("isLoading", true);
 

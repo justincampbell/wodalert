@@ -9,7 +9,16 @@
     {{feed-search subscription=model}}
 
     {{#if feedPicked}}
-      {{subscription-options subscription=model}}
+      {{#if isShowingOptions}}
+        <h5 class="is-size-5">
+          Customize Message
+          <small><a {{action "toggleOptions"}}>Hide</a></small>
+        </h5>
+        {{subscription-options subscription=model}}
+      {{else}}
+        Here's a preview of what the last workout message looked like.
+        You can <a {{action "toggleOptions"}}>customize the message</a>, or leave it as-is.
+      {{/if}}
     {{/if}}
   </div>
 
