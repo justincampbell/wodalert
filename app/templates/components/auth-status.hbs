@@ -1,6 +1,6 @@
 {{#if isSignedOut}}
   <button
-    class="button is-success"
+    class="button is-success {{if isLoading 'is-loading'}}"
     {{action "signIn"}}>
     <span class="icon">
       <i class="fa fa-sign-in"></i>

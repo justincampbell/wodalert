@@ -1,6 +1,6 @@
-import Component from "@ember/component";
 import { computed, observer } from "@ember/object";
 import { inject as service } from "@ember/service";
+import Component from "@ember/component";
 
 export default Component.extend({
   // TODO: Button title represents current state, pass default (sign in vs confirm)
@@ -11,6 +11,7 @@ export default Component.extend({
 
   isAuthenticated: computed.alias("authentication.isAuthenticated"),
   currentUser: computed.alias("authentication.currentUser"),
+  isLoading: computed.alias("authentication.isLoading"),
 
   color: "success",
   size: "medium",
@@ -29,7 +30,6 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this.get("authentication").authenticate();
     // We have to get this during init for the observer to work.
     this.get("isAuthenticated");
   },
@@ -48,59 +48,45 @@ export default Component.extend({
     },
 
     signOut() {
-      this.set("isLoading", true);
-
       this.get("authentication")
         .deleteSession()
         .finally(() => {
-          this.set("isLoading", false);
           this.set("state", "signedOut");
         });
     },
 
     requestCode() {
       const flash = this.get("flashMessages");
-
-      this.set("isLoading", true);
+      let smsNumber = this.get("smsNumber");
 
       this.get("authentication")
-        .requestCode(this.get("smsNumber"))
-        .then(
-          () => {
-            this.set("state", "waitingForVerificationCode");
-            flash.info("Verification code sent to " + this.get("smsNumber"));
-          },
-          errors => {
-            errors.forEach(error => {
-              flash.danger(error);
-            });
-          }
-        )
-        .finally(() => {
-          this.set("isLoading", false);
+        .requestCode(smsNumber)
+        .then(() => {
+          this.set("state", "waitingForVerificationCode");
+          flash.info(`Verification code sent to ${smsNumber}`);
+        })
+        .catch(({ payload }) => {
+          payload.errors.forEach(error => {
+            flash.danger(error.detail);
+          });
         });
     },
 
     verifyCode() {
       const flash = this.get("flashMessages");
-
-      this.set("isLoading", true);
+      let smsNumber = this.get("smsNumber");
+      let verificationCode = this.get("verificationCode");
 
       this.get("authentication")
-        .verifyCode(this.get("smsNumber"), this.get("verificationCode"))
-        .then(
-          () => {
-            this.set("state", "signingIn");
-            flash.success("SMS number verified");
-          },
-          errors => {
-            errors.forEach(error => {
-              flash.danger(error);
-            });
-          }
-        )
-        .finally(() => {
-          this.set("isLoading", false);
+        .verifyCode(smsNumber, verificationCode)
+        .then(() => {
+          this.set("state", "signingIn");
+          flash.success("SMS number verified");
+        })
+        .catch(({ payload }) => {
+          payload.errors.forEach(error => {
+            flash.danger(error.detail);
+          });
         });
     },
   },

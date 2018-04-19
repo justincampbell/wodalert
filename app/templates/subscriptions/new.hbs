@@ -30,8 +30,6 @@
 </div>
 
 {{#if feedPicked}}
-  {{auth-status buttonText="Verify Phone Number"}}
-
   {{#if authentication.isAuthenticated}}
     <div class="field">
       <div class="control">
@@ -49,5 +47,7 @@
         </div>
       </div>
     </div>
+  {{else}}
+    {{auth-status buttonText="Verify Phone Number"}}
   {{/if}}
 {{/if}}

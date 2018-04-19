@@ -1,117 +1,123 @@
-import Ember from "ember";
-import Service, { inject as service } from "@ember/service";
-import config from "../config/environment";
+import { isNotFoundError } from "ember-ajax/errors";
 import { computed } from "@ember/object";
+import Service, { inject as service } from "@ember/service";
 
 export default Service.extend({
+  ajax: service(),
   cookies: service(),
   store: service(),
 
   currentUser: null,
+  token: null,
+
   isAuthenticated: computed.notEmpty("currentUser.id"),
+  isLoading: true,
+
+  setToken(token, expires) {
+    this.set("token", token);
+    this.get("cookies").write("token", token, { expires: expires });
+    this.get("ajax").set("token", token);
+  },
 
   clearToken() {
-    this.get("cookies").clear("token");
+    this.set("token", null);
     this.set("currentUser", null);
-  },
-
-  setToken(token, expiresAt) {
-    this.get("cookies").write("token", token, { expires: expiresAt });
-    this.authenticate();
-  },
-
-  getToken() {
-    return this.get("cookies").read("token");
+    this.get("cookies").clear("token");
+    this.get("ajax").set("token", null);
   },
 
   init() {
     this._super(...arguments);
 
-    if (this.getToken()) {
-      this.authenticate();
-    }
+    let token = this.get("cookies").read("token");
+    this.set("token", token);
+    this.get("ajax").set("token", token);
+
+    this.authenticate();
   },
 
   authenticate() {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      Ember.$.ajax({
-        method: "GET",
-        url: config.APP.host + `/authenticate`,
+    this.set("isLoading", true);
+
+    let token = this.get("token");
+    if (!token) {
+      this.set("isLoading", false);
+      return;
+    }
+
+    return this.get("ajax")
+      .request("/authenticate", {
         headers: {
-          Authorization: "Bearer " + this.getToken(),
+          Authorization: `Bearer ${token}`,
         },
-        success: response => {
-          let user = this.get("store").pushPayload(response);
-          this.set("currentUser", user);
-        },
-        error: response => {
-          let errors = response.responseJSON.errors.map(error => error.detail);
+      })
+      .then(response => {
+        let user = this.get("store").pushPayload(response);
+        this.set("currentUser", user);
+      })
+      .catch(error => {
+        if (isNotFoundError(error)) {
           this.clearToken();
-          reject(errors);
-        },
+          return;
+        }
+        throw error;
+      })
+      .finally(() => {
+        this.set("isLoading", false);
       });
-    });
   },
 
   deleteSession() {
-    return new Ember.RSVP.Promise(resolve => {
-      let token = this.getToken();
+    this.set("isLoading", true);
 
-      if (!token) {
-        resolve();
-        return;
-      }
+    let token = this.get("token");
 
-      Ember.$.ajax({
-        method: "DELETE",
-        url: config.APP.host + `/authenticate`,
+    return this.get("ajax")
+      .delete("/authenticate", {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
-        success: () => {
-          this.clearToken();
-          resolve();
-        },
-        error: () => {
-          this.clearToken();
-          resolve();
-        },
+      })
+      .finally(() => {
+        this.clearToken();
+        this.set("isLoading", false);
       });
-    }, "Service 'authentication': requestCode");
   },
 
   requestCode(smsNumber) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      Ember.$.post({
-        url: config.APP.host + `/authenticate/request-code`,
+    this.set("isLoading", true);
+
+    return this.get("ajax")
+      .post(`/authenticate/request-code`, {
         data: { sms_number: smsNumber },
-        success: () => resolve(),
-        error: response => {
-          let errors = response.responseJSON.errors.map(error => error.detail);
-          reject(errors);
-        },
+        dataType: "text",
+      })
+      .finally(() => {
+        this.set("isLoading", false);
       });
-    }, "Service 'authentication': requestCode");
   },
 
   verifyCode(smsNumber, verificationCode) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      Ember.$.post({
-        url: config.APP.host + `/authenticate`,
+    this.set("isLoading", true);
+
+    return this.get("ajax")
+      .post(`/authenticate`, {
         data: {
           sms_number: smsNumber,
           verification_code: verificationCode,
         },
-        success: response => {
-          let session = this.get("store").pushPayload(response);
-          this.setToken(session.get("token"), session.get("expiresAt"));
-          resolve();
-        },
-        error: response => {
-          let errors = response.responseJSON.errors.map(error => error.detail);
-          reject(errors);
-        },
+        dataType: "text",
+      })
+      .then(response => {
+        let session = this.get("store").pushPayload(JSON.parse(response));
+
+        let token = session.get("token");
+        let expiresAt = session.get("expiresAt");
+
+        this.setToken(token, expiresAt);
+        this.set("isLoading", false);
+
+        this.authenticate();
       });
-    }, "Service 'authentication': verifyCode");
   },
 });
