@@ -1,0 +1,10 @@
+{{#each events as |event|}}
+  <div class="columns">
+    <div class="column">
+      {{component (concat "event/" event.code) event=event}}
+    </div>
+    <div class="column is-one-fifth">
+      {{moment-from event.createdAt}}
+    </div>
+  </div>
+{{/each}}

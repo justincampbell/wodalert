@@ -1,0 +1,19 @@
+<div class="columns">
+  <div class="column is-one-quarter">
+    <nav class="panel">
+      <p class="panel-tabs">
+        <a class="is-active">users</a>
+      </p>
+
+      {{#each model as |user|}}
+        {{#link-to "users.show" user.id class="panel-block"}}
+          {{sms-obfuscate user.smsNumber}}
+        {{/link-to}}
+      {{/each}}
+    </nav>
+  </div>
+
+  <div class="column">
+    {{outlet}}
+  </div>
+</div>
