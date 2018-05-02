@@ -10,6 +10,7 @@ export default Service.extend({
   currentUser: null,
   token: null,
 
+  isAdmin: computed.alias("currentUser.admin"),
   isAuthenticated: computed.notEmpty("currentUser.id"),
   isLoading: true,
 

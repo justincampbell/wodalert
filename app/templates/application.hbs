@@ -21,6 +21,12 @@
         Add a Gym
       {{/link-to}}
 
+      {{#if authentication.isAdmin}}
+        {{#link-to "users" class="navbar-item"}}
+          Users
+        {{/link-to}}
+      {{/if}}
+
       {{!--  <a class="navbar-item">How It Works</a>  --}}
       {{!--  <a class="navbar-item">Pricing</a>  --}}
     </div>

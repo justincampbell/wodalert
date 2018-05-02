@@ -1,6 +1,8 @@
+import { inject as service } from '@ember/service';
 import Controller from "@ember/controller";
 
 export default Controller.extend({
+  authentication: service(),
   navIsActive: false,
 
   actions: {
@@ -10,6 +12,6 @@ export default Controller.extend({
 
     toggleNav() {
       this.toggleProperty("navIsActive");
-    }
-  }
+    },
+  },
 });
