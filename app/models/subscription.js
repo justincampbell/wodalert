@@ -1,9 +1,12 @@
 import DS from "ember-data";
+import { inject as service } from "@ember/service";
 import Ember from "ember";
 
 const { attr, belongsTo } = DS;
 
 export default DS.Model.extend({
+  ajax: service(),
+
   feed: belongsTo("feed"),
   characterLimit: attr("number", { defaultValue: 480 }),
   includeFeedName: attr("boolean", { defaultValue: true }),
@@ -27,7 +30,8 @@ export default DS.Model.extend({
       });
     }
 
-    const adapter = this.store.adapterFor(this.constructor.modelName);
-    return adapter.preview(this);
+    return this.get("ajax").post(`/preview`, {
+      data: this.serialize(),
+    });
   },
 });

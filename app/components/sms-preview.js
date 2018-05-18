@@ -1,6 +1,7 @@
-import Component from "@ember/component";
+import { isNotFoundError } from "ember-ajax/errors";
 import { computed, observer } from "@ember/object";
 import { inject as service } from "@ember/service";
+import Component from "@ember/component";
 
 export default Component.extend({
   init() {
@@ -14,6 +15,7 @@ export default Component.extend({
   feed: computed.oneWay("subscription.feed"),
 
   preview: null,
+  error: null,
 
   displayPreview: computed.and("preview", "feed"),
 
@@ -26,12 +28,24 @@ export default Component.extend({
     "subscription.shortenCommonTerms",
     function() {
       this.set("loading", true);
+      this.set("error", null);
+
       this.get("subscription")
         .preview()
         .then(preview => {
-          this.set("loading", false);
           this.set("preview", preview.data.attributes.text);
+        })
+        .catch(error => {
+          if (isNotFoundError(error)) {
+            this.set("error", "We don't have any posts for that feed :(");
+            this.set("preview", null);
+            return;
+          }
+          throw error;
+        })
+        .finally(() => {
+          this.set("loading", false);
         });
     }
-  )
+  ),
 });

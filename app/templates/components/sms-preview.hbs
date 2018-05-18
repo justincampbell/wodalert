@@ -3,7 +3,17 @@
     <p class="is-size-7">Preview</p>
     <h5 class="title is-5 has-text-centered">Message from (123) 456-7890</h5>
 
-    {{#if displayPreview}}
+    {{#if error}}
+      <div class="notification is-warning has-text-centered">
+        <p>
+          {{error}}
+        </p>
+
+        <p>
+          You can try searching for another feed, or {{link-to "add a new feed" "feeds.new"}}.
+        </p>
+      </div>
+    {{else if displayPreview}}
       <div class="notification is-success has-text-left {{if loading 'is-loading'}}">
         {{{render-preview preview}}}
       </div>
@@ -11,6 +21,10 @@
       <p class="is-size-7 has-text-right">
         {{preview.length}}/{{subscription.characterLimit}} characters
       </p>
+    {{else if loading}}
+      <div class="notification {{if loading 'is-loading'}}">
+        &nbsp;
+      </div>
     {{else}}
       No preview
     {{/if}}
