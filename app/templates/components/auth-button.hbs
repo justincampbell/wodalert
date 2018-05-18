@@ -1,0 +1,30 @@
+{{#if isSignedOut}}
+  <button
+    class="button is-success {{if isLoading 'is-loading'}}"
+    {{action "signIn"}}>
+    <span class="icon">
+      <i class="fa fa-sign-in"></i>
+    </span>
+
+    <span>
+      {{buttonText}}
+    </span>
+  </button>
+{{else if isSignedIn}}
+  <button
+    class="button is-link {{if isLoading 'is-loading'}}"
+    {{action "signOut"}}
+    disabled={{isLoading}}>
+    <span class="icon">
+      <i class="fa fa-sign-out"></i>
+    </span>
+
+    <span>
+      Sign Out
+    </span>
+  </button>
+{{else}}
+  <button class="button is-success is-loading" disabled>
+    Signing in...
+  </button>
+{{/if}}

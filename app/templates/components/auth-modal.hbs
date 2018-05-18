@@ -1,16 +1,4 @@
-{{#if isSignedOut}}
-  <button
-    class="button is-success {{if isLoading 'is-loading'}}"
-    {{action "signIn"}}>
-    <span class="icon">
-      <i class="fa fa-sign-in"></i>
-    </span>
-
-    <span>
-      {{buttonText}}
-    </span>
-  </button>
-{{else if isWaitingForSMSNumber}}
+{{#if isWaitingForSMSNumber}}
   <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-content">
@@ -41,7 +29,7 @@
         <div class="control">
           <button
             class="button is-small is-success"
-            {{action "signOut"}}>
+            {{action "cancel"}}>
             Cancel
           </button>
         </div>
@@ -50,7 +38,7 @@
     <button
       class="modal-close is-large"
       aria-label="close"
-      {{action "signOut"}}>
+      {{action "cancel"}}>
     </button>
   </div>
 {{else if isWaitingForVerificationCode}}
@@ -94,7 +82,7 @@
           <div class="control">
             <button
               class="button is-small is-success"
-              {{action "signOut"}}>
+              {{action "cancel"}}>
               Cancel
             </button>
           </div>
@@ -104,24 +92,7 @@
     <button
       class="modal-close is-large"
       aria-label="close"
-      {{action "signOut"}}>
+      {{action "cancel"}}>
     </button>
   </div>
-{{else if isSigningIn}}
-  <button class="button is-success is-loading" disabled>
-    Signing in...
-  </button>
-{{else if isSignedIn}}
-  <button
-    class="button is-link {{if isLoading 'is-loading'}}"
-    {{action "signOut"}}
-    disabled={{isLoading}}>
-    <span class="icon">
-      <i class="fa fa-sign-out"></i>
-    </span>
-
-    <span>
-      Sign Out
-    </span>
-  </button>
 {{/if}}

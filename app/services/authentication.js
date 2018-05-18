@@ -1,5 +1,6 @@
 import { isNotFoundError } from "ember-ajax/errors";
-import { computed } from "@ember/object";
+import { alias, equal, notEmpty } from "@ember/object/computed";
+import { observer } from "@ember/object";
 import Service, { inject as service } from "@ember/service";
 
 export default Service.extend({
@@ -10,9 +11,36 @@ export default Service.extend({
   currentUser: null,
   token: null,
 
-  isAdmin: computed.alias("currentUser.admin"),
-  isAuthenticated: computed.notEmpty("currentUser.id"),
+  isAdmin: alias("currentUser.admin"),
+  isAuthenticated: notEmpty("currentUser.id"),
   isLoading: true,
+
+  state: "signedOut",
+  isSignedOut: equal("state", "signedOut"),
+  isWaitingForSMSNumber: equal("state", "waitingForSMSNumber"),
+  isWaitingForVerificationCode: equal("state", "waitingForVerificationCode"),
+  isSigningIn: equal("state", "signingIn"),
+  isSignedIn: equal("state", "signedIn"),
+
+  init() {
+    this._super(...arguments);
+
+    let token = this.get("cookies").read("token");
+    this.set("token", token);
+    this.get("ajax").set("token", token);
+
+    this.authenticate();
+
+    this.get("isAuthenticated");
+  },
+
+  signedInObserver: observer("isAuthenticated", function() {
+    if (this.get("isAuthenticated")) {
+      this.set("state", "signedIn");
+    } else {
+      this.set("state", "signedOut");
+    }
+  }),
 
   setToken(token, expires) {
     this.set("token", token);
@@ -25,16 +53,6 @@ export default Service.extend({
     this.set("currentUser", null);
     this.get("cookies").clear("token");
     this.get("ajax").set("token", null);
-  },
-
-  init() {
-    this._super(...arguments);
-
-    let token = this.get("cookies").read("token");
-    this.set("token", token);
-    this.get("ajax").set("token", token);
-
-    this.authenticate();
   },
 
   authenticate() {
@@ -82,6 +100,7 @@ export default Service.extend({
       .finally(() => {
         this.clearToken();
         this.set("isLoading", false);
+        this.set("state", "signedOut");
       });
   },
 
