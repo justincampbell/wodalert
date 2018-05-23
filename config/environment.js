@@ -20,6 +20,19 @@ module.exports = function(environment) {
     APP: {
       host: "https://feed-alerts-api.herokuapp.com",
     },
+
+    metricsAdapters: [
+      {
+        name: "GoogleAnalytics",
+        environments: ["development", "production"],
+        config: {
+          id: "UA-5973800-13",
+          debug: environment === "development",
+          trace: environment === "development",
+          sendHitTask: environment !== "development",
+        },
+      },
+    ],
   };
 
   if (environment === "development") {
